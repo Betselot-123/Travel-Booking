@@ -1,8 +1,8 @@
-# ✈️ Simple Travel Booking App
+#  Simple Travel Booking App
 
 A full-stack web application for checking flight availability and making travel bookings.
 
-## 🚀 Technology Stack
+##  Technology Stack
 
 ### Frontend
 - **HTML5**: Page structure and semantics
@@ -20,7 +20,7 @@ A full-stack web application for checking flight availability and making travel 
 - **npm**: Package management
 - **Git**: Version control
 
-## 📁 Project Structure
+##  Project Structure
 
 travel-booking-app/
 ├── app.js # Main application file (backend + frontend)
@@ -29,16 +29,16 @@ travel-booking-app/
 └── node_modules/ # Dependencies (auto-generated)
 
 
-## 🎯 Features
+##  Features
 
-- ✈️ Flight availability checking
-- 📅 Departure and return date selection
-- 👥 Multiple traveler support
-- 💰 Dynamic pricing based on destination
-- 📊 Booking history
-- 🎨 Modern UI with light blue gradient background
+-  Flight availability checking
+-  Departure and return date selection
+-  Multiple traveler support
+-  Dynamic pricing based on destination
+-  Booking history
+-  Modern UI with light blue gradient background
 
-## 🔧 Installation & Local Development
+##  Installation & Local Development
 
 1. **Clone repository**
    ```bash
@@ -92,4 +92,5 @@ This project uses a monolithic architecture with the frontend served directly fr
   "engines": {
     "node": ">=14.0.0"
   }
+
 }
