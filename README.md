@@ -26,7 +26,6 @@ travel-booking-app/
 ├── app.js # Main application file (backend + frontend)
 ├── package.json # Dependencies and scripts
 ├── README.md # This documentation
-└── node_modules/ # Dependencies (auto-generated)
 
 
 ##  Features
@@ -94,4 +93,5 @@ This project uses a monolithic architecture with the frontend served directly fr
   }
 
 }
+
 
