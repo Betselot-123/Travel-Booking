@@ -69,7 +69,7 @@ Backend:
  **Development**
 This project uses a monolithic architecture with the frontend served directly from the Express backend for simplicity.
 
-### **2. package.json** (Complete with your additions)
+### **2. package.json** 
 ```json
 {
   "name": "travel-booking-app",
@@ -94,3 +94,4 @@ This project uses a monolithic architecture with the frontend served directly fr
   }
 
 }
+
