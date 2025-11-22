@@ -11,10 +11,10 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Use persistent database file instead of in-memory
+// database file 
 const db = new sqlite3.Database('./travel.db');
 
-// Initialize database tables
+// database tables
 db.serialize(() => {
     db.run(`
         CREATE TABLE IF NOT EXISTS users (
@@ -39,7 +39,7 @@ db.serialize(() => {
         )
     `);
     
-    // Insert demo user if it doesn't exist
+    // demo user
     db.get('SELECT * FROM users WHERE email = ?', ['demo@example.com'], (err, row) => {
         if (err) {
             console.log('Error checking demo user:', err);
@@ -63,7 +63,7 @@ db.serialize(() => {
     });
 });
 
-// Mock flight data
+// flight data
 const mockFlights = {
     'paris': { seats: 45, basePrice: 450 },
     'london': { seats: 32, basePrice: 380 },
@@ -76,7 +76,7 @@ const mockFlights = {
     'ethiopia': { seats: 24, basePrice: 500 }
 };
 
-// Simple session storage
+// session storage
 const sessions = {};
 
 // Authentication middleware
@@ -89,11 +89,11 @@ const requireAuth = (req, res, next) => {
     next();
 };
 
-// Login endpoint - FIXED VERSION
+// Login 
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
     
-    console.log('Login attempt:', email); // Debug log
+    console.log('Login attempt:', email); 
     
     if (!email || !password) {
         return res.status(400).json({ error: 'Email and password required' });
@@ -105,7 +105,7 @@ app.post('/login', (req, res) => {
             return res.status(500).json({ error: 'Database error' });
         }
         
-        console.log('Found user:', user); // Debug log
+        console.log('Found user:', user); 
         
         if (!user) {
             return res.status(401).json({ error: 'Invalid email or password' });
@@ -116,7 +116,7 @@ app.post('/login', (req, res) => {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
         
-        // Create session
+        // session
         const sessionId = 'session_' + Math.random().toString(36).substr(2, 9);
         sessions[sessionId] = { id: user.id, email: user.email, name: user.name };
         
@@ -130,7 +130,7 @@ app.post('/login', (req, res) => {
     });
 });
 
-// Serve login page
+// login page
 app.get('/', (req, res) => {
     res.send(`
 <!DOCTYPE html>
@@ -285,7 +285,7 @@ app.get('/', (req, res) => {
     `);
 });
 
-// Serve home page (protected)
+// home page 
 app.get('/home', (req, res) => {
     res.send(`
 <!DOCTYPE html>
@@ -458,7 +458,7 @@ app.get('/home', (req, res) => {
     <div class="container">
         <!-- Booking Section -->
         <div id="bookingSection" class="section">
-            <h1>✈️ Book Your Flight</h1>
+            <h1> Book Your Flight</h1>
             
             <div id="bookingForm">
                 <div class="form-group">
@@ -745,7 +745,7 @@ app.get('/home', (req, res) => {
     `);
 });
 
-// Flight availability check (protected)
+// Flight availability
 app.post('/check-flights', requireAuth, (req, res) => {
     const { destination, departureDate, returnDate, travelers } = req.body;
     
@@ -800,7 +800,7 @@ app.post('/check-flights', requireAuth, (req, res) => {
     }, 800);
 });
 
-// Bookings routes (protected)
+// Bookings 
 app.get('/bookings', requireAuth, (req, res) => {
     db.all('SELECT * FROM bookings WHERE user_id = ? ORDER BY createdAt DESC', [req.user.id], (err, rows) => {
         if (err) {
@@ -849,6 +849,7 @@ app.listen(PORT, () => {
     console.log(' Try these destinations: Paris, London, New York, Tokyo, etc.');
     console.log(' Health check: http://localhost:' + PORT + '/health');
 });
+
 
 
 
