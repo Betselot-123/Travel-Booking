@@ -44,7 +44,7 @@ travel-booking-app/
 
 1. **Clone repository**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/Betselot-123/Travel-Booking
    cd travel-booking-app
 2. **Install dependencies**
 npm install
@@ -96,6 +96,7 @@ This project uses a monolithic architecture with the frontend served directly fr
   }
 
 }
+
 
 
 
