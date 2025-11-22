@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -9,13 +11,13 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Database setup
-const db = new sqlite3.Database(':memory:');
+// Use persistent database file instead of in-memory
+const db = new sqlite3.Database('./travel.db');
 
-// Create tables
+// Initialize database tables
 db.serialize(() => {
     db.run(`
-        CREATE TABLE users (
+        CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             email TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
@@ -25,7 +27,7 @@ db.serialize(() => {
     `);
     
     db.run(`
-        CREATE TABLE bookings (
+        CREATE TABLE IF NOT EXISTS bookings (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER,
             destination TEXT NOT NULL,
@@ -37,11 +39,28 @@ db.serialize(() => {
         )
     `);
     
-    // Insert a demo user (password: demo123)
-    db.run(
-        'INSERT INTO users (email, password, name) VALUES (?, ?, ?)',
-        ['demo@example.com', 'demo123', 'Demo User']
-    );
+    // Insert demo user if it doesn't exist
+    db.get('SELECT * FROM users WHERE email = ?', ['demo@example.com'], (err, row) => {
+        if (err) {
+            console.log('Error checking demo user:', err);
+            return;
+        }
+        if (!row) {
+            db.run(
+                'INSERT INTO users (email, password, name) VALUES (?, ?, ?)',
+                ['demo@example.com', 'demo123', 'Demo User'],
+                function(err) {
+                    if (err) {
+                        console.log('Error creating demo user:', err);
+                    } else {
+                        console.log('Demo user created successfully');
+                    }
+                }
+            );
+        } else {
+            console.log('Demo user already exists');
+        }
+    });
 });
 
 // Mock flight data
@@ -69,26 +88,38 @@ const requireAuth = (req, res, next) => {
     next();
 };
 
-// Login endpoint
+// Login endpoint - FIXED VERSION
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
+    
+    console.log('Login attempt:', email); // Debug log
     
     if (!email || !password) {
         return res.status(400).json({ error: 'Email and password required' });
     }
     
-    db.get('SELECT * FROM users WHERE email = ? AND password = ?', [email, password], (err, user) => {
+    db.get('SELECT * FROM users WHERE email = ?', [email], (err, user) => {
         if (err) {
+            console.log('Database error:', err);
             return res.status(500).json({ error: 'Database error' });
         }
         
+        console.log('Found user:', user); // Debug log
+        
         if (!user) {
+            return res.status(401).json({ error: 'Invalid email or password' });
+        }
+        
+        // Check password
+        if (user.password !== password) {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
         
         // Create session
         const sessionId = 'session_' + Math.random().toString(36).substr(2, 9);
         sessions[sessionId] = { id: user.id, email: user.email, name: user.name };
+        
+        console.log('Login successful for:', email); // Debug log
         
         res.json({
             success: true,
@@ -189,16 +220,16 @@ app.get('/', (req, res) => {
         <div id="errorMessage" class="error"></div>
         <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" id="email" placeholder="Enter your email" required>
+            <input type="email" id="email" placeholder="Enter your email" required value="demo@example.com">
         </div>
         <div class="form-group">
             <label for="password">Password:</label>
-            <input type="password" id="password" placeholder="Enter your password" required>
+            <input type="password" id="password" placeholder="Enter your password" required value="demo123">
         </div>
         <button onclick="login()">Login</button>
         
         <div class="demo-info">
-            <strong>Demo Account:</strong><br>
+            <strong>Demo Account (pre-filled):</strong><br>
             Email: demo@example.com<br>
             Password: demo123
         </div>
@@ -816,5 +847,4 @@ app.listen(PORT, () => {
     console.log(' Demo login: demo@example.com / demo123');
     console.log(' Try these destinations: Paris, London, New York, Tokyo, etc.');
     console.log(' Health check: http://localhost:' + PORT + '/health');
-
 });
