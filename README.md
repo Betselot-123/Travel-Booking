@@ -6,8 +6,8 @@ A full-stack web application for checking flight availability and making travel 
 
 ### Frontend
 - **HTML5**: Page structure and semantics
-- **CSS3**: Styling with modern features (Grid, Flexbox, gradients)
-- **JavaScript (ES6+)**: Client-side functionality and API calls
+- **CSS3**: Styling with modern features
+- **JavaScript**: Client-side functionality and API calls
 - **Responsive Design**: Works on desktop and mobile devices
 
 ### Backend
@@ -23,9 +23,12 @@ A full-stack web application for checking flight availability and making travel 
 ##  Project Structure
 
 travel-booking-app/
-├── app.js # Main application file (backend + frontend)
-├── package.json # Dependencies and scripts
-├── README.md # This documentation
+|-- app.js # Main application file (backend + frontend)
+|-- package.json # Dependencies and scripts
+|-- README.md # This documentation
+|-- index.html # Frontend ( html + css + js)
+|-- gitignore 
+|-- package-lock.json # Auto-generated
 
 
 ##  Features
@@ -62,8 +65,8 @@ GET /health - Server health check
 
  **Deployment**
 The application is deployed on:
-Frontend: https://travel-booking-80xl.onrender.com
-Backend: https://travel-booking-80xl.onrender.com
+Frontend: 
+Backend: 
 
  **Development**
 This project uses a monolithic architecture with the frontend served directly from the Express backend for simplicity.
@@ -93,6 +96,7 @@ This project uses a monolithic architecture with the frontend served directly fr
   }
 
 }
+
 
 
 
