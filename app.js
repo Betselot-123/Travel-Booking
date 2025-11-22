@@ -518,7 +518,7 @@ app.get('/home', (req, res) => {
                 </ul>
                 
                 <h2>Our Story</h2>
-                <p>Founded in 2024, TravelBooking has been helping thousands of travelers reach their destinations safely and comfortably. We believe that everyone deserves to explore the world.</p>
+                <p>Founded in 2025, by Betselot Tegegnework, TravelBooking has been helping hundreds of travelers reach their destinations safely and comfortably. We believe that everyone deserves to explore the world.</p>
             </div>
         </div>
 
@@ -530,7 +530,7 @@ app.get('/home', (req, res) => {
                 
                 <div class="contact-info">
                     <h3>📞 Phone Support</h3>
-                    <p>1-800-TRAVEL-1 (1-800-872-8351)</p>
+                    <p>+251 91 118 2206</p>
                     <p>Available Monday-Friday: 9AM-6PM EST</p>
                     
                     <h3>📧 Email Support</h3>
@@ -538,7 +538,7 @@ app.get('/home', (req, res) => {
                     <p>We typically respond within 24 hours</p>
                     
                     <h3>🏢 Office Address</h3>
-                    <p>123 Travel Street<br>Suite 100<br>New York, NY 10001</p>
+                    <p>123 Bole Medhanialem<br>Ethiopia<br>Addis Ababa, A.A</p>
                     
                     <h3>💬 Live Chat</h3>
                     <p>Available on our website during business hours</p>
@@ -848,3 +848,4 @@ app.listen(PORT, () => {
     console.log(' Try these destinations: Paris, London, New York, Tokyo, etc.');
     console.log(' Health check: http://localhost:' + PORT + '/health');
 });
+
