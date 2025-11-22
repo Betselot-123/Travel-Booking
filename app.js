@@ -481,9 +481,9 @@ app.get('/home', (req, res) => {
                 <ul>
                     <li>✈️ Best flight deals and availability</li>
                     <li>🔒 Secure and easy booking process</li>
-                    <li>📱 User-friendly platform</li>
-                    <li>🛡️ Reliable customer support</li>
-                    <li>💰 Competitive pricing</li>
+                    <li> User-friendly platform</li>
+                    <li> Reliable customer support</li>
+                    <li> Competitive pricing</li>
                 </ul>
                 
                 <h2>Our Story</h2>
@@ -638,7 +638,7 @@ app.get('/home', (req, res) => {
                 });
                 
                 if (response.ok) {
-                    alert('🎉 Booking successful! Happy travels!');
+                    alert(' Booking successful! Happy travels!');
                     document.getElementById('destination').value = '';
                     document.getElementById('departureDate').value = '';
                     document.getElementById('returnDate').value = '';
@@ -812,8 +812,9 @@ app.get('/health', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log('🚀 Travel booking app running at http://localhost:' + PORT);
-    console.log('🔐 Demo login: demo@example.com / demo123');
+    console.log(' Travel booking app running at http://localhost:' + PORT);
+    console.log(' Demo login: demo@example.com / demo123');
     console.log(' Try these destinations: Paris, London, New York, Tokyo, etc.');
-    console.log('🔍 Health check: http://localhost:' + PORT + '/health');
+    console.log(' Health check: http://localhost:' + PORT + '/health');
+
 });
