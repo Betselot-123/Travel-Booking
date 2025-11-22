@@ -73,6 +73,7 @@ const mockFlights = {
     'dubai': { seats: 36, basePrice: 550 },
     'rome': { seats: 29, basePrice: 420 },
     'sydney': { seats: 22, basePrice: 890 }
+    'ethiopia': { seats: 24, basePrice: 500 }
 };
 
 // Simple session storage
@@ -137,7 +138,7 @@ app.get('/', (req, res) => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel Booking - Login</title>
+    <title>BT Booking - Login</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -216,7 +217,7 @@ app.get('/', (req, res) => {
 </head>
 <body>
     <div class="container">
-        <h1>🌍 Travel Booking</h1>
+        <h1>🌍 BT Booking</h1>
         <div id="errorMessage" class="error"></div>
         <div class="form-group">
             <label for="email">Email:</label>
@@ -292,7 +293,7 @@ app.get('/home', (req, res) => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel Booking - Home</title>
+    <title>BT Booking - Home</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -503,7 +504,7 @@ app.get('/home', (req, res) => {
         <div id="aboutSection" class="section hidden">
             <h1>About Us</h1>
             <div class="about-content">
-                <p>Welcome to TravelBooking, your trusted partner for all your travel needs!</p>
+                <p>Welcome to BT Travel Booking, your trusted partner for all your travel needs!</p>
                 
                 <h2>Our Mission</h2>
                 <p>We strive to make travel booking simple, affordable, and accessible to everyone. Whether you're planning a business trip or a vacation, we've got you covered.</p>
@@ -518,7 +519,7 @@ app.get('/home', (req, res) => {
                 </ul>
                 
                 <h2>Our Story</h2>
-                <p>Founded in 2025, by Betselot Tegegnework, TravelBooking has been helping hundreds of travelers reach their destinations safely and comfortably. We believe that everyone deserves to explore the world.</p>
+                <p>Founded in 2025, by Betselot Tegegnework, BT.Booking has been helping hundreds of travelers reach their destinations safely and comfortably. We believe that everyone deserves to explore the world.</p>
             </div>
         </div>
 
@@ -534,7 +535,7 @@ app.get('/home', (req, res) => {
                     <p>Available Monday-Friday: 9AM-6PM EST</p>
                     
                     <h3>📧 Email Support</h3>
-                    <p>support@travelbooking.com</p>
+                    <p>support@btbooking.com</p>
                     <p>We typically respond within 24 hours</p>
                     
                     <h3>🏢 Office Address</h3>
@@ -848,6 +849,7 @@ app.listen(PORT, () => {
     console.log(' Try these destinations: Paris, London, New York, Tokyo, etc.');
     console.log(' Health check: http://localhost:' + PORT + '/health');
 });
+
 
 
 
