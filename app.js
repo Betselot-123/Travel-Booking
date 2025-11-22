@@ -229,7 +229,7 @@ app.get('/', (req, res) => {
         <button onclick="login()">Login</button>
         
         <div class="demo-info">
-            <strong>Demo Account (pre-filled):</strong><br>
+            <strong>This is a Demo Account (pre-filled), use:</strong><br>
             Email: demo@example.com<br>
             Password: demo123
         </div>
@@ -848,4 +848,5 @@ app.listen(PORT, () => {
     console.log(' Try these destinations: Paris, London, New York, Tokyo, etc.');
     console.log(' Health check: http://localhost:' + PORT + '/health');
 });
+
 
