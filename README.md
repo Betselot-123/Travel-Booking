@@ -65,8 +65,8 @@ GET /health - Server health check
 
  **Deployment**
 The application is deployed on:
-Frontend: https://travel-booking-2-ddwz.onrender.com
-Backend: https://travel-booking-2-ddwz.onrender.com
+Frontend: https://travel-booking-3-xzp2.onrender.com
+Backend: https://travel-booking-3-xzp2.onrender.com
 
  **Development**
 This project uses a monolithic architecture with the frontend served directly from the Express backend for simplicity.
@@ -96,6 +96,7 @@ This project uses a monolithic architecture with the frontend served directly fr
   }
 
 }
+
 
 
 
