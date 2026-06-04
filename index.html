@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Booking</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: Arial, sans-serif; 
+            background: linear-gradient(135deg, #87CEEB, #B0E0E6); 
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        h1 { 
+            color: #2c3e50; 
+            margin-bottom: 25px; 
+            text-align: center;
+            font-size: 2.2em;
+        }
+        .form-group { margin-bottom: 20px; }
+        label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: bold;
+            color: #34495e;
+        }
+        input, select { 
+            width: 100%; 
+            padding: 12px; 
+            border: 2px solid #bdc3c7; 
+            border-radius: 8px; 
+            font-size: 16px;
+        }
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        button { 
+            background: #3498db; 
+            color: white; 
+            padding: 15px 20px; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            width: 100%; 
+            font-size: 18px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        button:hover { background: #2980b9; }
+        .booking { 
+            background: #ecf0f1; 
+            padding: 20px; 
+            margin: 15px 0; 
+            border-radius: 10px;
+            border-left: 5px solid #3498db;
+        }
+        .hidden { display: none; }
+        .flight-status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .available { background: #d4edda; color: #155724; }
+        .unavailable { background: #f8d7da; color: #721c24; }
+        .date-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        @media (max-width: 600px) {
+            .date-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌍 Simple Travel Booking</h1>
+        
+        <div id="bookingForm">
+            <div class="form-group">
+                <label for="destination">Destination:</label>
+                <input type="text" id="destination" placeholder="Where do you want to go?" required>
+            </div>
+            
+            <div class="form-group date-group">
+                <div>
+                    <label for="departureDate">Departure Date:</label>
+                    <input type="date" id="departureDate" required>
+                </div>
+                <div>
+                    <label for="returnDate">Return Date:</label>
+                    <input type="date" id="returnDate" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="travelers">Number of Passengers:</label>
+                <select id="travelers">
+                    <option value="1">1 Passengers</option>
+                    <option value="2">2 Passengers</option>
+                    <option value="3">3 Passengers</option>
+                    <option value="4">4 Passengers</option>
+                </select>
+            </div>
+            
+            <div id="flightStatus" class="flight-status hidden"></div>
+            
+            <button onclick="checkFlights()">Check Flight Availability</button>
+            <button onclick="bookTravel()" style="background: #27ae60; margin-top: 10px;" id="bookButton" disabled>Book Flight</button>
+        </div>
+        
+        <div id="bookingsList" class="hidden">
+            <h2>Your Bookings</h2>
+            <div id="bookings"></div>
+            <button onclick="showBookingForm()" style="background: #e74c3c; margin-top: 20px;">Make Another Booking</button>
+        </div>
+    </div>
+
+    <script>
+        let currentFlightAvailable = false;
+
+        async function checkFlights() {
+    const destination = document.getElementById('destination').value;
+    const departureDate = document.getElementById('departureDate').value;
+    const returnDate = document.getElementById('returnDate').value;
+    const travelers = document.getElementById('travelers').value;
+
+    if (!destination || !departureDate || !returnDate) {
+        alert('Please fill in all fields');
+        return;
+    }
+
+    const statusDiv = document.getElementById('flightStatus');
+    statusDiv.className = 'flight-status';
+    statusDiv.innerHTML = '🔍 Checking flight availability...';
+    statusDiv.classList.remove('hidden');
+    
+    document.getElementById('bookButton').disabled = true;
+
+    try {
+        const response = await fetch('http://localhost:3000/check-flights', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ destination, departureDate, returnDate, travelers })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        
+        if (result.available) {
+            statusDiv.className = 'flight-status available';
+            statusDiv.innerHTML = `✅ Flights available to ${destination}!<br>
+                                  💺 ${result.seatsAvailable} seats available<br>
+                                  💰 Estimated price: $${result.price}`;
+            currentFlightAvailable = true;
+            document.getElementById('bookButton').disabled = false;
+        } else {
+            statusDiv.className = 'flight-status unavailable';
+            statusDiv.innerHTML = `❌ ${result.message}`;
+            currentFlightAvailable = false;
+            document.getElementById('bookButton').disabled = true;
+        }
+        
+    } catch (error) {
+        console.error('Flight check error:', error);
+        statusDiv.className = 'flight-status unavailable';
+        statusDiv.innerHTML = `❌ Error checking flights: ${error.message}<br>
+                              🔧 Make sure the server is running on port 3000`;
+        currentFlightAvailable = false;
+        document.getElementById('bookButton').disabled = true;
+    }
+}
+
+        async function bookTravel() {
+            if (!currentFlightAvailable) {
+                alert('Please check flight availability first!');
+                return;
+            }
+
+            const booking = {
+                destination: document.getElementById('destination').value,
+                departureDate: document.getElementById('departureDate').value,
+                returnDate: document.getElementById('returnDate').value,
+                travelers: document.getElementById('travelers').value
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/bookings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(booking)
+                });
+                
+                if (response.ok) {
+                    alert('🎉 Booking successful! Happy travels!');
+                    // Reset form
+                    document.getElementById('destination').value = '';
+                    document.getElementById('departureDate').value = '';
+                    document.getElementById('returnDate').value = '';
+                    document.getElementById('travelers').value = '1';
+                    document.getElementById('flightStatus').classList.add('hidden');
+                    document.getElementById('bookButton').disabled = true;
+                    currentFlightAvailable = false;
+                    loadBookings();
+                }
+            } catch (error) {
+                alert('Error making booking. Make sure the server is running.');
+            }
+        }
+
+        async function loadBookings() {
+            try {
+                const response = await fetch('http://localhost:3000/bookings');
+                const bookings = await response.json();
+                
+                const bookingsHTML = bookings.map(booking => `
+                    <div class="booking">
+                        <strong>✈️ ${booking.destination}</strong><br>
+                        🗓️ Depart: ${booking.departureDate} | Return: ${booking.returnDate}<br>
+                        👥 Travelers: ${booking.travelers}<br>
+                        <small>📅 Booked on: ${new Date(booking.createdAt).toLocaleDateString()}</small>
+                    </div>
+                `).join('');
+                
+                document.getElementById('bookings').innerHTML = bookingsHTML;
+                document.getElementById('bookingForm').classList.add('hidden');
+                document.getElementById('bookingsList').classList.remove('hidden');
+            } catch (error) {
+                console.error('Error loading bookings:', error);
+            }
+        }
+
+        function showBookingForm() {
+            document.getElementById('bookingForm').classList.remove('hidden');
+            document.getElementById('bookingsList').classList.add('hidden');
+        }
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('departureDate').min = today;
+        document.getElementById('returnDate').min = today;
+
+        // Load bookings when page loads
+        loadBookings();
+    </script>
+</body>
+</html>
